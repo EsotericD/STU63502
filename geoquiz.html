@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Geography Quiz</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Geography Quiz</h1>
+  </header>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="lessons.html">Lessons</a>
+    <a href="quiz.html">Quiz</a>
+    <a href="about.html">About</a>
+  </nav>
+  <section class="quiz-container">
+    <div id="quiz"></div>
+    <div class="quiz-controls">
+      <button id="start-btn">Start Quiz</button>
+      <div id="results"></div>
+    </div>
+  </section>
+  <footer>
+    <p>&copy; Prototype for Computing Dissertation Project • No user data collected</p>
+  </footer>
+  <script>
+    const questions = [
+      {
+        question: "What is the capital of Jamaica?",
+        options: ["Kingston", "Port of Spain", "Castries", "Bridgetown"],
+        answer: 0
+      },
+      {
+        question: "Which hazard is most common in the Caribbean?",
+        options: ["Blizzards", "Tornadoes", "Earthquakes", "Hurricanes"],
+        answer: 3
+      }
+    ];
+
+    let current = 0, score = 0;
+    const quiz = document.getElementById('quiz');
+    const results = document.getElementById('results');
+    const startBtn = document.getElementById('start-btn');
+
+    startBtn.addEventListener('click', startQuiz);
+
+    function startQuiz() {
+      startBtn.style.display = 'none';
+      showQuestion();
+    }
+
+    function showQuestion() {
+      if (current >= questions.length) return showResults();
+      const q = questions[current];
+      quiz.innerHTML = \`
+        <h3>\${q.question}</h3>
+        <div>\${q.options.map((o,i) => \`<button onclick="selectAnswer(\${i})">\${o}</button>\`).join('')}</div>
+      \`;
+    }
+
+    function selectAnswer(index) {
+      if (index === questions[current].answer) score++;
+      current++;
+      showQuestion();
+    }
+
+    function showResults() {
+      quiz.innerHTML = "";
+      results.innerHTML = \`
+        <h3>Quiz Complete!</h3>
+        <p>You scored \${score} out of \${questions.length}</p>
+        <button onclick="resetQuiz()">Try Again</button>
+      \`;
+    }
+
+    function resetQuiz() {
+      current = 0; score = 0;
+      results.innerHTML = "";
+      startQuiz();
+    }
+  </script>
+</body>
+</html>
